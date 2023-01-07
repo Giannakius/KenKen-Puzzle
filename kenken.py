@@ -275,7 +275,7 @@ for i in range(len(problems)):
         Total_assigns += return_list[j][i][1]
     print("")
 print("Total CPU Time : " +str(Total_times) + "s ")
-print("Total CPU Time : " +str(Total_assigns) + " assigns ")
+print("Total assigns : " +str(Total_assigns) + " assigns ")
 
 
 #trash
