@@ -176,35 +176,35 @@ class kenken (CSP) :
             return 1
 import time
 
-# def solver(problems,algorithmn):
-#     start = time.time()
-#     for problem in problems:
-#         # AC3(problem)
-#         print(algorithmn(problem,10000))
-#     end = time.time()
-#     print(end - start)
-
+#Solve problem
 def solver(problems, algorithmn, select_unassigned_variable, inf=no_inference):
+    #keep solved problems counter
     solved = 0
+    #keep tuple with times and assigns
     return_list = []
-    print("Settings : \n" + "select_unassigned_variable = " + str(select_unassigned_variable) + "\ninference = " + str(inf))
     for i in range(len(problems)):
+        #start time counter
         start_problem = time.time()
         AC3(problems[i])
         print("Solving Problem " +str(i) + " size " + str(problems[i].n) + "*" +str(problems[i].n))
+        #solve and print puzzle
         solved+=problems[i].print_puzzle(algorithmn(problems[i],select_unassigned_variable, inference=inf))
         print("Asssigns = " + str(problems[i].nassigns))
+        #end time counter
         end_problem = time.time()
         return_list.append((end_problem - start_problem,problems[i].nassigns))
         print(end_problem - start_problem)
     print("Solved "+str(solved)+"/"+str(len(problems)))
     print("Cpu Time = " + str(sum(return_list[0])) + " s")
     return return_list
+
+
 def solver_min_conflicts(problems):
+    #keep solved problems counter
     solved = 0
+    #keep tuple with times and assigns
     return_list = []
-    promlem_times = []
-    print("Settings : min_conflicts \n")
+    print("Run with min_conflicts \n")
     for i in range(len(problems)):
         start_problem = time.time()
         AC3(problems[i])
@@ -214,9 +214,14 @@ def solver_min_conflicts(problems):
         end_problem = time.time()
         return_list.append((end_problem - start_problem,problems[i].nassigns))
     print("Solved "+str(solved)+"/"+str(len(problems)))
-    print("Cpu Time = " + str(sum(promlem_times)) + " s")
+    print("Cpu Time = " + str(sum(return_list[0])) + " s")
     return return_list
 
+
+
+#Main Programm
+
+#Initialize problems
 e1 = kenken("rqeyqs_folder/Kenkel-3-easy");
 e2 = kenken("rqeyqs_folder/Kenken-4-Hard.txt")
 e3 = kenken("rqeyqs_folder/Kenken-5-Hard.txt")
@@ -228,15 +233,27 @@ e8 = kenken("rqeyqs_folder/Kenken-8-Hard-2.txt")
 e9 = kenken("rqeyqs_folder/Kenken-9-Hard-1.txt")
 e10 = kenken("rqeyqs_folder/Kenken-9-Hard-2.txt")
 problems = [e1, e2, e3, e4, e5, e6, e7, e8, e9, e10]
+#list contains a tuple with tie time and assigns of every problem
 return_list = []
 #run with forward_checking
 return_list.append(solver(problems, backtracking_search, mrv, forward_checking))
 #run without forward_checking
 #return_list.append(solver(problems, backtracking_search, mrv))
-#run with mac
+#run with mac algorithm
 return_list.append(solver(problems, backtracking_search, mrv, mac))
 #minconficts
 return_list.append(solver_min_conflicts(problems))
+
+
+
+
+
+
+#AYTA MPOREITE NA TA SVISETE KAI NA TA VALETE STO PDF THS THEORIAS TA APOTELESMATA
+
+
+
+#print results
 print("\nTime Table for all problems/algorithms")
 print("    mrv/fc      mrv/mac     min_conflicts")
 
