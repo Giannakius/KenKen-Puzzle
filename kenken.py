@@ -28,6 +28,7 @@ class CAGE :
     def has_solution_add_mul_eq(self, remain_var, curr_val, currdomains):
         if len(remain_var) == 0:
             return curr_val == self.result
+
         for value in currdomains[remain_var[0]]:
             if self.getOp() == '+':
                 new_value = value + curr_val
@@ -59,7 +60,8 @@ class CAGE :
                     else:
                         return value / curr_val == self.result or curr_val / value == self.result
     
-class kenken (CSP) :
+class KenKen (CSP) :
+
     def __init__(self,string):
         [n,first_num,operators,cages] = self.split(string)
         self.n = n
@@ -130,22 +132,24 @@ class kenken (CSP) :
                 return cage
         
     def f(self,A, a, B, b):
-        A_col = self.same_cols_vars(A)
-        A_row = self.same_rows_vars(A)
-        if (B in A_col or B in A_row) and a == b:
+
+        if (B in self.same_cols_vars(A) or B in self.same_rows_vars(A)) and a == b:
             return False
+
         Acage = self.findCage(A)
         Bcage = self.findCage(B)
         Aflag = True
         Bflag = True
         Acagevars = list(Acage.getVars())
         Bcagevars = list(Bcage.getVars())
+
         if len(Acagevars) == 1:
             Aflag = Acage.have_solution_eq(a)
         if len(Bcagevars) == 1:
             Bflag = Bcage.have_solution_eq(b)
         if len(Acagevars) == 1 or len(Bcagevars) == 1:
             return Aflag and Bflag
+
         if Acage == Bcage:
             Acagevars.remove(A)
             Acagevars.remove(B)
@@ -199,22 +203,24 @@ def solver(problems, algorithmn, select_unassigned_variable, inf=no_inference):
     return return_list
 
 
-def solver_min_conflicts(problems):
-    #keep solved problems counter
-    solved = 0
-    #keep tuple with times and assigns
-    return_list = []
-    print("Run with min_conflicts \n")
-    for i in range(len(problems)):
-        start_problem = time.time()
-        AC3(problems[i])
-        print("Solving Problem " +str(i) + " size " + str(problems[i].n) + "*" +str(problems[i].n))
-        solved += problems[i].print_puzzle(min_conflicts(problems[i],100))
-        print("Asssigns = " + str(problems[i].nassigns))
-        end_problem = time.time()
-        return_list.append((end_problem - start_problem,problems[i].nassigns))
+def Solve_Problem_Min_Conflicts(problems):
+    
+    solved = 0 # Solved Problems Counter
+    return_list = [] # tuple with Times and Assigns
+    
+    #print("Min_Conflicts Algorithm \n")
+
+    for k in range(len(problems)):
+
+        start_problem = time.time() # Start Timer
+        AC3(problems[k])
+        print("\n Solving Problem " +str(k) + " size " + str(problems[k].n) + "*" +str(problems[k].n))
+        solved += problems[k].print_puzzle(min_conflicts(problems[k],100))
+        print("Asssigns = " + str(problems[k].nassigns))
+        end_problem = time.time() # End Timer
+        return_list.append((end_problem - start_problem,problems[k].nassigns))
     print("Solved "+str(solved)+"/"+str(len(problems)))
-    print("Cpu Time = " + str(sum(return_list[0])) + " s")
+    print("Cpu Time = " + str(sum(return_list[0])) + " s" + "\n")
     return return_list
 
 
@@ -222,17 +228,17 @@ def solver_min_conflicts(problems):
 #Main Programm
 
 #Initialize problems
-e1 = kenken("rqeyqs_folder/Kenkel-3-easy");
-e2 = kenken("rqeyqs_folder/Kenken-4-Hard.txt")
-e3 = kenken("rqeyqs_folder/Kenken-5-Hard.txt")
-e4 = kenken("rqeyqs_folder/Kenken-6-Hard.txt")
-e5 = kenken("rqeyqs_folder/Kenken-7-Hard-1.txt")
-e6 = kenken("rqeyqs_folder/Kenken-7-Hard-2.txt")
-e7 = kenken("rqeyqs_folder/Kenken-8-Hard-1.txt")
-e8 = kenken("rqeyqs_folder/Kenken-8-Hard-2.txt")
-e9 = kenken("rqeyqs_folder/Kenken-9-Hard-1.txt")
-e10 = kenken("rqeyqs_folder/Kenken-9-Hard-2.txt")
-problems = [e1, e2, e3, e4, e5, e6, e7, e8, e9, e10]
+e1 = KenKen("Problems/Kenkel-3-easy");
+# e2 = KenKen("Problems/Kenken-4-Hard.txt")
+# e3 = KenKen("Problems/Kenken-5-Hard.txt")
+# e4 = KenKen("Problems/Kenken-6-Hard.txt")
+# e5 = KenKen("Problems/Kenken-7-Hard-1.txt")
+# e6 = KenKen("Problems/Kenken-7-Hard-2.txt")
+# e7 = KenKen("Problems/Kenken-8-Hard-1.txt")
+# e8 = KenKen("Problems/Kenken-8-Hard-2.txt")
+# e9 = KenKen("Problems/Kenken-9-Hard-1.txt")
+# e10 = KenKen("Problems/Kenken-9-Hard-2.txt")
+problems = [e1]#, e2, e3, e4, e5, e6, e7, e8, e9, e10]
 #list contains a tuple with tie time and assigns of every problem
 return_list = []
 #run with forward_checking
@@ -242,7 +248,7 @@ return_list.append(solver(problems, backtracking_search, mrv, forward_checking))
 #run with mac algorithm
 return_list.append(solver(problems, backtracking_search, mrv, mac))
 #minconficts
-return_list.append(solver_min_conflicts(problems))
+return_list.append(Solve_Problem_Min_Conflicts(problems))
 
 
 
@@ -274,8 +280,8 @@ for i in range(len(problems)):
         print(str(return_list[j][i][1]) + " assigns ", end='')
         Total_assigns += return_list[j][i][1]
     print("")
-print("Total CPU Time : " +str(Total_times) + "s ")
-print("Total assigns : " +str(Total_assigns) + " assigns ")
+print("Total CPU Time : " +str(Total_times) + "s " )
+print("Total assigns : " +str(Total_assigns) + " assigns " + "\n")
 
 
 #trash
@@ -286,16 +292,16 @@ print("Total assigns : " +str(Total_assigns) + " assigns ")
 # print(backtracking_search(e,select_unassigned_variable=mrv))
                 
          
-# e1 = kenken("rqeyqs_folder/Kenkel-3-easy");
-# e2 = kenken("rqeyqs_folder/Kenken-4-Hard.txt")
-# e3 = kenken("rqeyqs_folder/Kenken-5-Hard.txt")
-# e4 = kenken("rqeyqs_folder/Kenken-6-Hard.txt")
-# e5 = kenken("rqeyqs_folder/Kenken-7-Hard-1.txt")
-# e6 = kenken("rqeyqs_folder/Kenken-7-Hard-2.txt")
-# e7 = kenken("rqeyqs_folder/Kenken-8-Hard-1.txt")
-# e8 = kenken("rqeyqs_folder/Kenken-8-Hard-2.txt")
-# e9 = kenken("rqeyqs_folder/Kenken-9-Hard-1.txt")
-#e10 = kenken("rqeyqs_folder/Kenken-9-Hard-2.txt")
+# e1 = KenKen("Problems/Kenkel-3-easy");
+# e2 = KenKen("Problems/Kenken-4-Hard.txt")
+# e3 = KenKen("Problems/Kenken-5-Hard.txt")
+# e4 = KenKen("Problems/Kenken-6-Hard.txt")
+# e5 = KenKen("Problems/Kenken-7-Hard-1.txt")
+# e6 = KenKen("Problems/Kenken-7-Hard-2.txt")
+# e7 = KenKen("Problems/Kenken-8-Hard-1.txt")
+# e8 = KenKen("Problems/Kenken-8-Hard-2.txt")
+# e9 = KenKen("Problems/Kenken-9-Hard-1.txt")
+#e10 = KenKen("Problems/Kenken-9-Hard-2.txt")
 # problems = [e1,e2,e3,e4,e5,e6,e7,e8,e9,e10]
 # solver(problems,min_conflicts)
 #AC3(e10)
