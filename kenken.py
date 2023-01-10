@@ -87,22 +87,23 @@ class KenKen (CSP) :
                 if var in cage.Get_Vars():
                     self.neighbors[var] = self.neighbors[var] + cage.Get_Neighbours(var)
         
-        CSP.__init__(self,self.variables,self.domains,self.neighbors,self.f)
+        CSP.__init__(self,self.variables,self.domains,self.neighbors,self.Constraits)
         
         self.curr_domains = {v: list(self.domains[v]) for v in self.variables}
         
         for var in self.variables:
             self.neighbors[var] = list(dict.fromkeys(self.neighbors[var]))
     
-    # Split the Input string into parts
+    
+    # Επιστρεφει το n και 3 tuples
     def split(self,string):
         lines = []
         first_num = []
         operators = []
         cages = []
         
-        with open(string,"r") as f:
-            lines = [line.rstrip() for line in f]
+        with open(string,"r") as Constraits:
+            lines = [line.rstrip() for line in Constraits]
 
         n = int(lines[0])
         lines.pop(0)
@@ -126,8 +127,14 @@ class KenKen (CSP) :
             tuple = tuple + (int(full_number),)
             cages.append(tuple)
 
+        # n = μεγεθος προβληματος
+        # first_num ειναι λιστα με τα αποτελεσματα των πραξεων ενος cage
+        # operators ειναι μια λιστα με τα operators (δεξια δεξια)
+        # cages ειναι μια λιστα με ολες τις ενδιαμεσες τιμες
+
         return [n,first_num,operators,cages]
     
+    # παιρνει ως ορισμα μια μεταβλητη και επιστρεφει μια λιστα με τις μεταβλητες που βρισκονται στην ιδια ΓΡΑΜΜΗ με αυτη
     def same_rows_vars(self,variable):
         rows = []
         for i in range(self.n):
@@ -135,7 +142,8 @@ class KenKen (CSP) :
             if (variable in rows):
                 rows.remove(variable)
                 return rows
-                    
+
+    # παιρνει ως ορισμα μια μεταβλητη και επιστρεφει μια λιστα με τις μεταβλητες που βρισκονται στην ιδια ΣΤΗΛΗ με αυτη             
     def same_cols_vars(self,variable):
         for i in range(self.n):
             cols = []
@@ -149,8 +157,12 @@ class KenKen (CSP) :
         for cage in self.Cages:
             if var in cage.Get_Vars():
                 return cage
-        
-    def f(self,A, a, B, b):
+    
+
+
+    # Επιστρεφει False αν μετα την αναθεση τιμων a στο Α και b στο Β δεν ικανοποιειται τουλαχιστον ενας περιορισμος
+
+    def Constraits(self,A, a, B, b):
 
         if (B in self.same_cols_vars(A) or B in self.same_rows_vars(A)) and a == b:
             return False
@@ -258,6 +270,37 @@ return_list.append(Problem_Solver(problems, backtracking_search, mrv, mac))
 
 #Run with Min_Conflict
 #return_list.append(Solve_Problem_Min_Conflicts(problems))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
