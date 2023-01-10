@@ -95,7 +95,7 @@ class KenKen (CSP) :
             self.neighbors[var] = list(dict.fromkeys(self.neighbors[var]))
     
     
-    # Επιστρεφει το n και 3 tuples
+    # returns the n and 3 tuples
     def split(self,string):
         lines = []
         first_num = []
@@ -269,7 +269,7 @@ return_list.append(Problem_Solver(problems, backtracking_search, mrv, forward_ch
 return_list.append(Problem_Solver(problems, backtracking_search, mrv, mac))
 
 #Run with Min_Conflict
-#return_list.append(Solve_Problem_Min_Conflicts(problems))
+return_list.append(Solve_Problem_Min_Conflicts(problems))
 
 
 
@@ -313,7 +313,7 @@ return_list.append(Problem_Solver(problems, backtracking_search, mrv, mac))
 
 #print results
 print("\nTime Table for all problems/algorithms")
-print("        mrv/fc           mrv/mac     ")
+print("        MRV/FC           MRV/MAC      Min_Conficts")
 
 Total_times = 0
 Total_assigns = 0
