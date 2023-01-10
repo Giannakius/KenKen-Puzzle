@@ -154,11 +154,12 @@ class KenKen (CSP) :
 
         if (B in self.same_cols_vars(A) or B in self.same_rows_vars(A)) and a == b:
             return False
-
-        Acage = self.Find_Cage(A)
-        Bcage = self.Find_Cage(B)
+        
         Aflag = True
         Bflag = True
+        Acage = self.Find_Cage(A)
+        Bcage = self.Find_Cage(B)
+        
         Acagevars = list(Acage.Get_Vars())
         Bcagevars = list(Bcage.Get_Vars())
 
@@ -269,7 +270,7 @@ return_list.append(Problem_Solver(problems, backtracking_search, mrv, mac))
 
 #print results
 print("\nTime Table for all problems/algorithms")
-print("    mrv/fc      mrv/mac     min_conflicts")
+print("        mrv/fc           mrv/mac     ")
 
 Total_times = 0
 Total_assigns = 0
