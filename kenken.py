@@ -244,17 +244,17 @@ def Solve_Problem_Min_Conflicts(problems):
 #Main Programm
 
 #Initialize problems
-e1 = KenKen("Problems/Kenkel-3-easy")
-e2 = KenKen("Problems/Kenken-4-Hard.txt")
-e3 = KenKen("Problems/Kenken-5-Hard.txt")
-e4 = KenKen("Problems/Kenken-6-Hard.txt")
-e5 = KenKen("Problems/Kenken-7-Hard-1.txt")
-e6 = KenKen("Problems/Kenken-7-Hard-2.txt")
-e7 = KenKen("Problems/Kenken-8-Hard-1.txt")
-e8 = KenKen("Problems/Kenken-8-Hard-2.txt")
-e9 = KenKen("Problems/Kenken-9-Hard-1.txt")
-e10 = KenKen("Problems/Kenken-9-Hard-2.txt")
-problems = [e1, e2, e3, e4, e5, e6, e7, e8, e9, e10]
+
+e1 = KenKen("Problems/Kenken-4-Hard.txt")
+e2 = KenKen("Problems/Kenken-5-Hard.txt")
+e3 = KenKen("Problems/Kenken-6-Hard.txt")
+e4 = KenKen("Problems/Kenken-7-Hard-1.txt")
+e5 = KenKen("Problems/Kenken-7-Hard-2.txt")
+e6 = KenKen("Problems/Kenken-8-Hard-1.txt")
+e7 = KenKen("Problems/Kenken-8-Hard-2.txt")
+e8 = KenKen("Problems/Kenken-9-Hard-1.txt")
+e9 = KenKen("Problems/Kenken-9-Hard-2.txt")
+problems = [e1, e2, e3, e4, e5, e6, e7, e8, e9]
 
 #list contains a tuple with tie time and assigns of every problem
 return_list = []
@@ -269,69 +269,4 @@ return_list.append(Problem_Solver(problems, backtracking_search, mrv, forward_ch
 return_list.append(Problem_Solver(problems, backtracking_search, mrv, mac))
 
 #Run with Min_Conflict
-return_list.append(Solve_Problem_Min_Conflicts(problems))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#AYTA MPOREITE NA TA SVISETE KAI NA TA VALETE STO PDF THS THEORIAS TA APOTELESMATA
-
-
-
-#print results
-print("\nTime Table for all problems/algorithms")
-print("        MRV/FC           MRV/MAC      Min_Conficts")
-
-Total_times = 0
-Total_assigns = 0
-for i in range(len(problems)):
-    print("e" + str(i + 1) + " ", end='')
-    if i < len(problems) - 1: print(" ", end='')
-    for j in range(len(return_list)):
-        print(str('%.8f' % return_list[j][i][0]) + " sec | ", end='')
-        Total_times += return_list[j][i][0]
-    print("")
-print("")
-for i in range(len(problems)):
-    print("e" + str(i + 1) + " ", end='')
-    if i < len(problems) - 1: print(" ", end='')
-    for j in range(len(return_list)):
-        print(str(return_list[j][i][1]) + " assigns ", end='')
-        Total_assigns += return_list[j][i][1]
-    print("")
-print("Total CPU Time : " +str(Total_times) + "sec" )
-print("Total assigns : " +str(Total_assigns) + " assigns")
-
+#return_list.append(Solve_Problem_Min_Conflicts(problems))
