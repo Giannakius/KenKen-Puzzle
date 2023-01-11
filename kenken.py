@@ -6,7 +6,7 @@ class Cage :
     # Intialize Cage
     def __init__(self, variables, op, result):
         self.variables = variables
-        self.op = op
+        self.operator = op
         self.result = result
     
     # If Cage has Solution the value "value"
@@ -22,14 +22,6 @@ class Cage :
         temp_var.remove(var)
         return temp_var
 
-    # Get Operator
-    def Get_Op(self):
-        return self.op
-    
-    # Get the Variables
-    def Get_Vars(self):
-        return self.variables
-    
 
     # If the Multiply or the Add proposal Has Solution return True
     def Add_Multiply_Has_Solution(self, remain_var, curr_val, currdomains):
@@ -37,9 +29,9 @@ class Cage :
             return curr_val == self.result
 
         for value in currdomains[remain_var[0]]:
-            if self.Get_Op() == '+':
+            if self.operator == '+':
                 new_value = value + curr_val
-            elif self.Get_Op() == '*':
+            elif self.operator == '*':
                 new_value = value * curr_val
             
             if self.Add_Multiply_Has_Solution(remain_var[1:], new_value, currdomains) == True:  
@@ -49,15 +41,15 @@ class Cage :
     # If the Subtraction or the division proposal Has Solution return True
     def Div_Sub_Has_Solution(self, var, curr_val, currdoms):
         if len(var) == 0:
-            if self.Get_Op() == '-':
+            if self.operator == '-':
                 return curr_val == self.result
-            if self.Get_Op() == '/':
+            if self.operator == '/':
                 return curr_val == float(self.result)
         else:
             for value in currdoms[var[0]]:
-                if self.Get_Op() == '-':
+                if self.operator == '-':
                     return value - curr_val == self.result or curr_val - value == self.result
-                if self.Get_Op() == '/':
+                if self.operator == '/':
                     
                     a1 = value == self.result
                     a2 = curr_val == self.result
@@ -89,7 +81,7 @@ class KenKen (CSP) :
         
         for var in self.variables:
             for cage in self.Cages:
-                if var in cage.Get_Vars():
+                if var in cage.variables:
                     self.neighbors[var] = self.neighbors[var] + cage.Get_Neighbours(var)
         
         CSP.__init__(self,self.variables,self.domains,self.neighbors,self.Constraits)
@@ -160,7 +152,7 @@ class KenKen (CSP) :
             
     def Find_Cage(self, var):
         for cage in self.Cages:
-            if var in cage.Get_Vars():
+            if var in cage.variables:
                 return cage
     
 
@@ -177,8 +169,8 @@ class KenKen (CSP) :
         Acage = self.Find_Cage(A)
         Bcage = self.Find_Cage(B)
         
-        Acagevars = list(Acage.Get_Vars())
-        Bcagevars = list(Bcage.Get_Vars())
+        Acagevars = list(Acage.variables)
+        Bcagevars = list(Bcage.variables)
 
 
         if len(Acagevars) == 1:
@@ -192,13 +184,13 @@ class KenKen (CSP) :
             Acagevars.remove(A)
             Acagevars.remove(B)
 
-            if Acage.Get_Op() == '+':
+            if Acage.operator == '+':
                 return Acage.Add_Multiply_Has_Solution(Acagevars, a + b, self.curr_domains)
-            if Acage.Get_Op() == '*':
+            if Acage.operator == '*':
                 return Acage.Add_Multiply_Has_Solution(Acagevars, a * b, self.curr_domains)
-            if Acage.Get_Op() == '-':
+            if Acage.operator == '-':
                 return Acage.Div_Sub_Has_Solution(Acagevars, a - b, self.curr_domains) or Acage.Div_Sub_Has_Solution(Acagevars, b - a, self.curr_domains)
-            if Acage.Get_Op() == '/':
+            if Acage.operator == '/':
                 return Acage.Div_Sub_Has_Solution(Acagevars, a/b, self.curr_domains) or Acage.Div_Sub_Has_Solution(Acagevars, b/a, self.curr_domains)
         
         return True
