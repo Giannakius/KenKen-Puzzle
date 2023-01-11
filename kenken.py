@@ -70,12 +70,12 @@ class KenKen (CSP) :
         [n,first_num,operators,cages] = self.split(string)
         self.n = n
 
-        self.variables = [i for i in range(n*n)]
-        self.domains = {var: [i+1 for i in range(n)] for var in self.variables}
+        self.variables = [x for x in range(n*n)]
+        self.domains = {var: [x+1 for x in range(n)] for var in self.variables}
         self.Cages = []
         
-        for i in range(len(cages)):
-            self.Cages.append(Cage(cages[i],operators[i],first_num[i]))
+        for x in range(len(cages)):
+            self.Cages.append(Cage(cages[x],operators[x],first_num[x]))
         
         self.neighbors = {var: self.same_cols_vars(var) + self.same_rows_vars(var) for var in self.variables}
         
@@ -134,18 +134,18 @@ class KenKen (CSP) :
     # παιρνει ως ορισμα μια μεταβλητη και επιστρεφει μια λιστα με τις μεταβλητες που βρισκονται στην ιδια ΓΡΑΜΜΗ με αυτη
     def same_rows_vars(self,variable):
         rows = []
-        for i in range(self.n):
-            rows = self.variables[i*self.n:(i+1)*self.n]
+        for x in range(self.n):
+            rows = self.variables[x*self.n:(x+1)*self.n]
             if (variable in rows):
                 rows.remove(variable)
                 return rows
 
     # παιρνει ως ορισμα μια μεταβλητη και επιστρεφει μια λιστα με τις μεταβλητες που βρισκονται στην ιδια ΣΤΗΛΗ με αυτη             
     def same_cols_vars(self,variable):
-        for i in range(self.n):
+        for x in range(self.n):
             cols = []
-            for j in range(0,self.n*self.n,self.n):
-                cols.append(i+j)
+            for k in range(0,self.n*self.n,self.n):
+                cols.append(x+k)
             if (variable in cols):
                 cols.remove(variable)
                 return cols       
@@ -244,7 +244,7 @@ def Solve_Problem_Min_Conflicts(problems):
 #Initialize problems
 
 problems = []
-for i in range(9): problems.append(KenKen("Problems/Kenken-"+str(i+1)+".txt"))
+for x in range(9): problems.append(KenKen("Problems/Kenken-"+str(x+1)+".txt"))
 
 #list contains a tuple with tie time and assigns of every problem
 return_list = []
@@ -266,20 +266,20 @@ print("               MRV/FC           MRV/MAC        Min_Conficts")
 
 Total_times = 0
 Total_assigns = 0
-for i in range(len(problems)):
-    print("Problem :" + str(i + 1) + " ", end='')
-    if i < len(problems) - 1: print(" ", end='')
-    for j in range(len(return_list)):
-        print(str('%.8f' % return_list[j][i][0]) + " sec | ", end='')
-        Total_times += return_list[j][i][0]
+for x in range(len(problems)):
+    print("Problem :" + str(x + 1) + " ", end='')
+    if x < len(problems) - 1: print(" ", end='')
+    for k in range(len(return_list)):
+        print(str('%.8f' % return_list[k][x][0]) + " sec | ", end='')
+        Total_times += return_list[k][x][0]
     print("")
 print("")
-for i in range(len(problems)):
-    print("Problem :" + str(i + 1) + " ", end='')
-    if i < len(problems) - 1: print(" ", end='')
-    for j in range(len(return_list)):
-        print(str(return_list[j][i][1]) + " assigns ", end='')
-        Total_assigns += return_list[j][i][1]
+for x in range(len(problems)):
+    print("Problem :" + str(x + 1) + " ", end='')
+    if x < len(problems) - 1: print(" ", end='')
+    for k in range(len(return_list)):
+        print(str(return_list[k][x][1]) + " assigns ", end='')
+        Total_assigns += return_list[k][x][1]
     print("")
 
 
