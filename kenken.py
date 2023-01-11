@@ -13,7 +13,8 @@ class Cage :
     def Have_Solution(self,value):
         if value == self.result :
             return True
-        return False
+        else:
+            return False
 
     # Get the neighbours of the Cage
     def Get_Neighbours(self,var):
@@ -57,10 +58,14 @@ class Cage :
                 if self.Get_Op() == '-':
                     return value - curr_val == self.result or curr_val - value == self.result
                 if self.Get_Op() == '/':
+                    
+                    a1 = value == self.result
+                    a2 = curr_val == self.result
+                    
                     if value == 0:
-                        return value == self.result
+                        return a1
                     elif curr_val == 0:
-                        return curr_val == self.result
+                        return a2
                     else:
                         return value / curr_val == self.result or curr_val / value == self.result
 
@@ -175,6 +180,7 @@ class KenKen (CSP) :
         Acagevars = list(Acage.Get_Vars())
         Bcagevars = list(Bcage.Get_Vars())
 
+
         if len(Acagevars) == 1:
             Aflag = Acage.Have_Solution(a)
         if len(Bcagevars) == 1:
@@ -245,16 +251,8 @@ def Solve_Problem_Min_Conflicts(problems):
 
 #Initialize problems
 
-e1 = KenKen("Problems/Kenken-4-Hard.txt")
-e2 = KenKen("Problems/Kenken-5-Hard.txt")
-e3 = KenKen("Problems/Kenken-6-Hard.txt")
-e4 = KenKen("Problems/Kenken-7-Hard-1.txt")
-e5 = KenKen("Problems/Kenken-7-Hard-2.txt")
-e6 = KenKen("Problems/Kenken-8-Hard-1.txt")
-e7 = KenKen("Problems/Kenken-8-Hard-2.txt")
-e8 = KenKen("Problems/Kenken-9-Hard-1.txt")
-e9 = KenKen("Problems/Kenken-9-Hard-2.txt")
-problems = [e1, e2, e3, e4, e5, e6, e7, e8, e9]
+problems = []
+for i in range(9): problems.append(KenKen("Problems/Kenken-"+str(i+1)+".txt"))
 
 #list contains a tuple with tie time and assigns of every problem
 return_list = []
@@ -270,3 +268,26 @@ return_list.append(Problem_Solver(problems, backtracking_search, mrv, mac))
 
 #Run with Min_Conflict
 #return_list.append(Solve_Problem_Min_Conflicts(problems))
+
+
+print("               MRV/FC           MRV/MAC        Min_Conficts")
+
+Total_times = 0
+Total_assigns = 0
+for i in range(len(problems)):
+    print("Problem :" + str(i + 1) + " ", end='')
+    if i < len(problems) - 1: print(" ", end='')
+    for j in range(len(return_list)):
+        print(str('%.8f' % return_list[j][i][0]) + " sec | ", end='')
+        Total_times += return_list[j][i][0]
+    print("")
+print("")
+for i in range(len(problems)):
+    print("Problem :" + str(i + 1) + " ", end='')
+    if i < len(problems) - 1: print(" ", end='')
+    for j in range(len(return_list)):
+        print(str(return_list[j][i][1]) + " assigns ", end='')
+        Total_assigns += return_list[j][i][1]
+    print("")
+
+
